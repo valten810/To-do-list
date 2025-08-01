@@ -1,0 +1,201 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: 80%;
+}
+.box {
+    background-color: #eee;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    gap: 10px;
+    width: 40%;
+    margin: auto;
+
+    min-height: 414px;
+    transition: all 0.3s ease;
+
+}
+h1 {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    color: #0000;
+
+    text-align: center;
+    font-size: 64px;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+}
+
+#input {
+
+
+    background-color: #eee;
+
+    padding: 10px;
+    border-radius: 10px;
+    color: #333;
+    border: 2px solid transparent;
+    font-size: 1.4rem;
+    transition: all 0.3s;
+
+}
+#input:focus {
+    outline: none;
+    border-color: #667eea;
+    transform: translateY(-1px);
+    box-shadow: 0 0 10px #1233
+}
+#agregar {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 16px 24px;
+    font-weight: 600;
+    color: #eee;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+#agregar:hover {
+    transform: translateY(-7px);
+}
+#agregar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 10px;
+    pointer-events: none;
+}
+#agregar:hover::after {
+    opacity: 0.1 !important;
+}
+
+
+
+.completed {
+    text-decoration: line-through;
+    opacity: 0.3;
+    filter: blur(0.5px);
+}
+ul {
+    padding: 0;
+}
+li {
+    padding: 10px 15px;
+    animation: fadeRight 1s ease;
+    border-radius: 10px ;
+    display: flex;
+    gap: 5px;
+    color: #333;
+    margin-top: 10px;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0px 5px 15px #2221;
+    text-wrap: wrap;
+}
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 10px #6663;
+}
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border: none;
+}
+.eliminar {
+    all: unset;
+    background-color: #c22c;
+    border: none;
+    padding: 10px;
+    margin-left: auto;
+    color: #eee;
+    font-size: 16px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: 0.3s ease;
+}
+.eliminar * {
+    text-decoration: none !important;
+}
+.eliminar:hover {
+    transform: scale(1.08);
+    background-color: #c22d;
+}
+
+
+.empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 18px;
+    color: #757575;
+    display: none;
+
+}
+.empty-state.show {
+    display: block;
+    animation: fadeIn 0.6s ease-in-out both;
+}
+
+@keyframes fadeRight {
+    from {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes fadeLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translatey(-60px);
+    }
+    to {
+        opacity: 1;
+        transform: translatey(0);
+    }
+}
+
+@media (max-width: 1200px) {
+    .box {
+        width: 80%;
+    }
+}
+@media (max-width: 720px) {
+    .box {
+        width: 100%;
+    }
+    .container {
+        flex-direction: column;
+
+    }
+}

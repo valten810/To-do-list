@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="box">
+        <h1 class="h1">✨ Mis tareas</h1>
+        <div class="container">
+            <input type="text" id="input" placeholder="¿Qué necesitas hacer hoy?">
+            <button id="agregar">➕ Agregar</button>
+        </div>
+        <div class="empty-state" id="empty-state">
+            🌟 ¡No tienes tareas pendientes!<br>
+            <small>Agrega una nueva tarea para comenzar</small>
+        </div>
+        <ul id="lista-tareas"></ul>
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
