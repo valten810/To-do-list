@@ -150,7 +150,7 @@ li:hover {
     font-size: 18px;
     color: #757575;
     display: none;
-    font-size: 1.3rem;
+    font-size: 1.9rem;
 
 }
 .empty-state.show {
@@ -199,13 +199,22 @@ li:hover {
         width: 100%;
         margin: 0;
         border-radius: 0;
-        padding: 0;
+        padding: 20px;
     }
 
     .container {
         flex-direction: column;
+
     }
     html {
         font-size: 20px;
+    }
+}
+@media (max-width: 720px) {
+    html {
+        font-size: 16px;
+    }
+    h1 {
+        font-size: 3.4rem;
     }
 }
