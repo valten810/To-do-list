@@ -48,7 +48,7 @@ h1 {
     padding: 10px;
     border-radius: 10px;
     color: #333;
-    border: 2px solid transparent;
+    border: 2px solid #667eea88;
     font-size: 1.4rem !important;
     transition: all 0.3s;
     font-size: 1rem;
