@@ -52,7 +52,7 @@ h1 {
     font-size: 1.4rem !important;
     transition: all 0.3s;
     font-size: 1rem;
-
+    box-shadow: 0 0 10px #1232
 }
 #input:focus {
     outline: none;
