@@ -17,7 +17,7 @@ Diseño limpio y responsive para móviles y desktops.
 
 🧩 Cómo usar la app
 
-Abrí la aplicación en tu navegador: [link de tu web]
+Abrí la aplicación en tu navegador: todolist.netlify.app
 
 Escribí tu tarea en el campo correspondiente y hacé clic en Agregar.
 
