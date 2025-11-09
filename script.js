@@ -8,7 +8,7 @@ const guardadas = localStorage.getItem("tareas")
 if (guardadas) {
     tareas = JSON.parse(guardadas)
     tareas.forEach(tarea => {
-        crearTarea(tarea.texto, tarea.completada)
+        crearTarea(tarea.texto, tarea.completada, tarea.id)
     });
 }
 updateTaskList()
@@ -18,40 +18,44 @@ boton.addEventListener("click", () => {
     if (texto === "")
         return
     
-    tareas.push({ texto, completada: false})
+    const id = Date.now().toString()
+    tareas.push({ texto, completada: false, id })
     guardarTareas()
     
-    crearTarea(texto)
+    crearTarea(texto, false, id)
 
     input.value = ""
-    input.focus
+    input.focus()           // <-- usar paréntesis
     updateTaskList()
 })
 
-function crearTarea(texto, completed = false) {
+function crearTarea(texto, completed = false, id = null) {
     const li = document.createElement("li")
+    const taskId = id || Date.now().toString()
+    li.dataset.id = taskId
+    li.classList.add('task-item')   // <-- necesaria para touch handlers
+    li.draggable = true             // <-- habilita drag en escritorio
 
     const checkbox = document.createElement("input")
     checkbox.type = "checkbox"
     checkbox.classList.add("checkbox")
     if (completed) {
-    checkbox.checked = true
-    li.classList.add("completed")
-}
+        checkbox.checked = true
+        li.classList.add("completed")
+    }
 
     checkbox.addEventListener("change", () => {
         li.classList.toggle("completed");
         
-        const textoTarea = span.textContent
-        const tarea = tareas.find(t => t.texto === textoTarea)
+        const tarea = tareas.find(t => String(t.id) === String(li.dataset.id))
         if (tarea) {
             tarea.completada = checkbox.checked
             guardarTareas()
-        }});
+        }
+    });
 
     const span = document.createElement("span")
     span.textContent = texto
-
 
     const btnEliminar = document.createElement("button")
     btnEliminar.textContent = "🗑️ Eliminar"
@@ -62,10 +66,18 @@ function crearTarea(texto, completed = false) {
             li.remove()
             updateTaskList()
         }, 300)
-        tareas = tareas.filter(t => t.texto !== span.textContent)
+        tareas = tareas.filter(t => String(t.id) !== String(li.dataset.id)) // <-- filtrar por id
         guardarTareas()
     })
     
+    // drag handlers para escritorio
+    li.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', li.dataset.id)
+        li.classList.add('dragging')
+    })
+    li.addEventListener('dragend', () => {
+        li.classList.remove('dragging')
+    })
 
     lista.appendChild(li)
     li.appendChild(checkbox)
@@ -76,7 +88,6 @@ function crearTarea(texto, completed = false) {
     input.focus();
 
     updateTaskList()
-
 }
 
 function updateTaskList() {
@@ -131,3 +142,38 @@ lista.addEventListener('touchend', () => {
     guardarTareas()
     touchDragging = null
 }, { passive: true })
+
+// handlers de drop/ordenado (escritorio)
+lista.addEventListener('dragover', e => {
+    e.preventDefault()
+    const afterElement = getDragAfterElement(lista, e.clientY)
+    const dragging = document.querySelector('.dragging')
+    if (!dragging) return
+    if (afterElement == null) {
+        lista.appendChild(dragging)
+    } else {
+        lista.insertBefore(dragging, afterElement)
+    }
+})
+
+lista.addEventListener('drop', e => {
+    e.preventDefault()
+    const newOrderIds = Array.from(lista.children).map(li => li.dataset.id)
+    tareas = newOrderIds.map(id => tareas.find(t => String(t.id) === String(id))).filter(Boolean)
+    guardarTareas()
+    updateTaskList()
+})
+
+function getDragAfterElement(container, y) {
+    const draggableElements = [...container.querySelectorAll('li.task-item:not(.dragging)')]
+    let closest = { offset: Number.NEGATIVE_INFINITY, element: null }
+
+    for (const child of draggableElements) {
+        const box = child.getBoundingClientRect()
+        const offset = y - box.top - box.height / 2
+        if (offset < 0 && offset > closest.offset) {
+            closest = { offset, element: child }
+        }
+    }
+    return closest.element
+}
