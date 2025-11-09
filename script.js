@@ -93,3 +93,41 @@ function guardarTareas() {
     localStorage.setItem("tareas", JSON.stringify(tareas))
 }
 updateTaskList()
+
+// Soporte táctil para arrastrar en móviles
+let touchDragging = null;
+
+lista.addEventListener('touchstart', (e) => {
+    const li = e.target.closest('li.task-item')
+    if (!li) return
+    touchDragging = li
+    touchDragging.classList.add('dragging')
+}, { passive: true })
+
+lista.addEventListener('touchmove', (e) => {
+    if (!touchDragging) return
+    e.preventDefault() // manejamos el movimiento
+    const touch = e.touches[0]
+    const elem = document.elementFromPoint(touch.clientX, touch.clientY)
+    const afterEl = elem ? elem.closest('li.task-item') : null
+
+    if (afterEl && afterEl !== touchDragging) {
+        const rect = afterEl.getBoundingClientRect()
+        const insertBefore = touch.clientY < rect.top + rect.height / 2
+        if (insertBefore) lista.insertBefore(touchDragging, afterEl)
+        else lista.insertBefore(touchDragging, afterEl.nextSibling)
+    } else if (!afterEl) {
+        lista.appendChild(touchDragging)
+    }
+}, { passive: false })
+
+lista.addEventListener('touchend', () => {
+    if (!touchDragging) return
+    touchDragging.classList.remove('dragging')
+
+    // reconstruir el orden en tareas y guardar
+    const newOrderIds = Array.from(lista.children).map(li => li.dataset.id)
+    tareas = newOrderIds.map(id => tareas.find(t => String(t.id) === String(id))).filter(Boolean)
+    guardarTareas()
+    touchDragging = null
+}, { passive: true })
